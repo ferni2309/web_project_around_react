@@ -1,0 +1,18 @@
+.header {
+  max-width: 880px;
+  margin: auto;
+  border-bottom: 1px solid #545454;
+}
+
+.header__logo {
+  margin: 0;
+  width: clamp(126px, 14.7vw, 173px);
+  height: clamp(24px, 2.9vw, 33px);
+  padding: 45px 0 41px;
+}
+
+@media screen and (max-width: 880px) {
+  .header__logo {
+    padding-left: 27px;
+  }
+}
