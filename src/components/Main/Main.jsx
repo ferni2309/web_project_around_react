@@ -1,30 +1,44 @@
-import profileImage from '../../assets/images/profile.jpg';
+import React, { useContext } from 'react'; // Importamos useContext
+import { CurrentUserContext } from '../../context/CurrentUserContext'; // Importamos el contexto
 import editAvatarIcon from '../../assets/images/EditAvatar.png';
 import editButtonIcon from '../../assets/images/EditButton.png';
 import addButtonIcon from '../../assets/images/addButton.png';
 import Card from './components/Card/Card';
 
-const initialCards = [
-  { isLiked: false, _id: '5d1f0611d321eb4bdcd707dd', name: 'Yosemite Valley', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg' },
-  { isLiked: false, _id: '5d1f064ed321eb4bdcd707de', name: 'Lake Louise', link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg' },
-];
+// Nota: initialCards debe venir ahora desde el estado en App.jsx a través de props
+function Main({ 
+  onEditProfileClick, 
+  onAddPlaceClick, 
+  onEditAvatarClick, 
+  onCardClick, 
+  onRemoveCardClick,
+  cards // Recibe las tarjetas por props desde App
+}) {
+  
+  // 1. Suscripción al contexto para obtener los datos del usuario
+  const currentUser = useContext(CurrentUserContext);
 
-function Main({ onEditProfileClick, onAddPlaceClick, onEditAvatarClick, onCardClick, onRemoveCardClick }) {
   return (
     <main className="content">
       <section className="profile">
         <div className="profile__avatar">
-          <img src={profileImage} alt="Perfil" className="profile__imagen" />
+          {/* 2. Usamos currentUser.avatar en lugar de la imagen estática */}
+          <img 
+            src={currentUser.avatar} 
+            alt={`Foto de ${currentUser.name}`} 
+            className="profile__imagen" 
+          />
           <button type="button" className="profile__EditAvatar" onClick={onEditAvatarClick}>
             <img src={editAvatarIcon} alt="Editar avatar" />
           </button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__name">Jacques Cousteau</h1>
+          {/* 3. Usamos currentUser.name y currentUser.about */}
+          <h1 className="profile__name">{currentUser.name}</h1>
           <button type="button" className="profile__EditButton" onClick={onEditProfileClick}>
             <img src={editButtonIcon} alt="Editar perfil" />
           </button>
-          <h2 className="profile__acerca-de-mi">Explorador</h2>
+          <h2 className="profile__acerca-de-mi">{currentUser.about}</h2>
         </div>
         <button type="button" className="profile__AddButton" onClick={onAddPlaceClick}>
           <img src={addButtonIcon} alt="Agregar" />
@@ -33,7 +47,8 @@ function Main({ onEditProfileClick, onAddPlaceClick, onEditAvatarClick, onCardCl
 
       <section className="elements">
         <ul className="cards__list" style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '20px' }}>
-          {initialCards.map((card) => (
+          {/* 4. Renderizamos el array de tarjetas que viene del estado de App */}
+          {cards.map((card) => (
             <Card 
               key={card._id} 
               card={card} 
