@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import Card from "./components/Card/Card";
-import EditProfile from "./components/Popup/EditProfile/EditProfile";
-import EditAvatar from "./components/Popup/EditAvatar/EditAvatar";
-import NewCard from "./components/Popup/NewCard/NewCard";
+import PopupWithForm from "./components/popup/PopupWithForm";
+import EditProfile from "./components/popup/EditProfile/EditProfile";
+import EditAvatar from "./components/popup/EditAvatar/EditAvatar";
+import NewCard from "./components/popup/NewCard/NewCard";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
@@ -32,7 +33,7 @@ function Main({ cards, onUpdateUser, onUpdateAvatar, onAddPlaceSubmit, onCardLik
     <main className="content">
       <section className="profile">
         <div className="profile_avatar-container" onClick={handleEditAvatarClick}>
-          <img src={currentUser.avatar || ""} alt="Avatar" className="profile_avatar" />
+          <img src={currentUser.avatar || "/images/default-avatar.png"} alt="Avatar" className="profile_avatar" />
           <div className="profile_avatar-overlay"></div>
         </div>
 
@@ -60,7 +61,7 @@ function Main({ cards, onUpdateUser, onUpdateAvatar, onAddPlaceSubmit, onCardLik
         </ul>
       </section>
 
-      {/* Popups */}
+      {/* Popups incluidos directamente en Main */}
       <EditProfile isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={onUpdateUser} />
       <EditAvatar isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={onUpdateAvatar} />
       <NewCard isOpen={isNewCardPopupOpen} onClose={closeAllPopups} onAddPlaceSubmit={onAddPlaceSubmit} />
