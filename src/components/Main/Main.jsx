@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import Card from "./components/Card/Card";
-import EditProfile from "../Form/EditProfile/EditProfile";
-import EditAvatar from "../Form/EditAvatar/EditAvatar";
-import NewCard from "../Form/NewCard/NewCard";
+import EditProfile from "./components/Popup/EditProfile/EditProfile";
+import EditAvatar from "./components/Popup/EditAvatar/EditAvatar";
+import NewCard from "./components/Popup/NewCard/NewCard";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 function Main(props) {
