@@ -4,17 +4,15 @@ import { CurrentUserContext } from "../../../../contexts/CurrentUserContext";
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const { currentUser } = useContext(CurrentUserContext);
 
+  // Verificar si la tarjeta pertenece al usuario actual
   const isOwn = card.owner === currentUser._id;
-  const cardDeleteButtonClassName = `card__delete ${
-    isOwn ? "" : "card__delete_hidden"
-  }`;
+  const cardDeleteButtonClassName = `card_delete ${isOwn ? "" : "card_delete_hidden"}`;
 
-  const isLiked = card.isLiked; 
+  // Verificar si el usuario actual le dio like
+  const isLiked = card.isLiked;
+  const cardLikeButtonClassName = `card_like-button ${isLiked ? "card_like-button_is-active" : ""}`;
 
-  const cardLikeButtonClassName = `card__like-button ${
-    isLiked ? "card__like-button_is-active" : ""
-  }`;
-
+  // Handlers
   function handleClick() {
     onCardClick(card);
   }
@@ -30,7 +28,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   return (
     <li className="card">
       <img
-        className="card__image"
+        className="card_image"
         src={card.link}
         alt={card.name}
         onClick={handleClick}
@@ -40,9 +38,9 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         onClick={handleDeleteClick}
         type="button"
       />
-      <div className="card__info">
-        <h2 className="card__title">{card.name}</h2>
-        <div className="card__like-container">
+      <div className="card_info">
+        <h2 className="card_title">{card.name}</h2>
+        <div className="card_like-container">
           <button
             className={cardLikeButtonClassName}
             onClick={handleLikeClick}
