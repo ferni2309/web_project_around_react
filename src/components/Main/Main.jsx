@@ -12,18 +12,33 @@ function Main(props) {
   return (
     <main className="content">
       <section className="profile">
-        <div className="profile__avatar-container" onClick={() => props.onOpenPopup('edit-avatar')}>
-          <img src={currentUser.avatar || null} alt="Avatar" className="profile__avatar" />
+        <div
+          className="profile__avatar-container"
+          onClick={() => props.onOpenPopup("edit-avatar")}
+        >
+          <img
+            src={currentUser.avatar || null}
+            alt="Avatar"
+            className="profile__avatar"
+          />
           <div className="profile__avatar-overlay"></div>
         </div>
         <div className="profile__info">
           <div className="profile__title-container">
             <h1 className="profile__name">{currentUser.name}</h1>
-            <button className="profile__edit-button" type="button" onClick={() => props.onOpenPopup('edit-profile')}></button>
+            <button
+              className="profile__edit-button"
+              type="button"
+              onClick={() => props.onOpenPopup("edit-profile")}
+            ></button>
           </div>
           <p className="profile__about">{currentUser.about}</p>
         </div>
-        <button className="profile__add-button" type="button" onClick={() => props.onOpenPopup('add-place')}></button>
+        <button
+          className="profile__add-button"
+          type="button"
+          onClick={() => props.onOpenPopup("add-place")}
+        ></button>
       </section>
 
       <section className="cards">
@@ -41,29 +56,22 @@ function Main(props) {
       </section>
 
       {/* AQUÍ INCLUIMOS LOS POPUPS DENTRO DE MAIN */}
-      <EditProfile 
-        isOpen={props.popup === 'edit-profile'} 
-        onClose={props.onClosePopup} 
-        onUpdateUser={props.onUpdateUser} 
+      <EditProfile
+        isOpen={props.popup === "edit-profile"}
+        onClose={props.onClosePopup}
+        onUpdateUser={props.onUpdateUser}
       />
-
-      <EditAvatar 
-        isOpen={props.popup === 'edit-avatar'} 
-        onClose={props.onClosePopup} 
-        onUpdateAvatar={props.onUpdateAvatar} 
+      <EditAvatar
+        isOpen={props.popup === "edit-avatar"}
+        onClose={props.onClosePopup}
+        onUpdateAvatar={props.onUpdateAvatar}
       />
-
-      <NewCard 
-        isOpen={props.popup === 'add-place'} 
-        onClose={props.onClosePopup} 
-        onAddPlaceSubmit={props.onAddPlaceSubmit} 
+      <NewCard
+        isOpen={props.popup === "add-place"}
+        onClose={props.onClosePopup}
+        onAddPlaceSubmit={props.onAddPlaceSubmit}
       />
-
-      <ImagePopup 
-        isOpen={props.popup === 'image-popup'} 
-        onClose={props.onClosePopup} 
-        onAddPlaceSubmit={props.onAddPlaceSubmit} 
-      />
+      <ImagePopup card={props.selectedCard} onClose={props.onClosePopup} />
     </main>
   );
 }
