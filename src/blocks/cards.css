@@ -54,7 +54,7 @@
 .card__like-button {
   width: 22px;
   height: 19px;
-  background: transparent url("../../assets/images/Group-corazón.svg") center no-repeat;
+  background: transparent url("../images/Group-corazón.svg") center no-repeat;
   background-size: contain;
   border: none;
   cursor: pointer;
@@ -62,7 +62,7 @@
 }
 
 .card__like-button_is-active {
-  background-image: url("../../assets/images/Group-corazón-Active.svg") !important;
+  background-image: url("../images/Group-corazón-Active.svg") !important;
 }
 
 .card__like-count {
@@ -73,7 +73,7 @@
 .card__delete {
   width: 18px;
   height: 19px;
-  background: transparent url("../../assets/images/Trash.svg") center no-repeat;
+  background: transparent url("../images/Trash.svg") center no-repeat;
   border: none;
   position: absolute;
   top: 18px;

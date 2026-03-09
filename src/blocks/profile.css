@@ -30,7 +30,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5) url("../../assets/images/EditAvatar.png") center no-repeat;
+  background: rgba(0, 0, 0, 0.5) url("../images/EditAvatar.png") center no-repeat;
   background-size: 26px;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -71,7 +71,7 @@
 }
 
 .profile__edit-button {
-  background: transparent url("../../assets/images/EditButton.png") center no-repeat;
+  background: transparent url("../images/EditButton.png") center no-repeat;
   border: 1px solid #fff;
   width: 24px;
   height: 24px;
@@ -84,7 +84,7 @@
 
 .profile__add-button {
   margin-left: auto;
-  background: transparent url("../../assets/images/AddButton.png") center no-repeat;
+  background: transparent url("../images/AddButton.png") center no-repeat;
   border: 2px solid #fff;
   width: 150px;
   height: 50px;
