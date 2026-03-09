@@ -8,7 +8,7 @@ import EditAvatar from "./Form/EditAvatar/EditAvatar";
 import NewCard from "./Form/NewCard/NewCard";
 import RemoveCard from "./RemoveCard/RemoveCard";
 import api from "../utils/api";
-import { CurrentUserContext } from "../context/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   

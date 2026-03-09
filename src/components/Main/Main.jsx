@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import Card from "./components/Card/Card";
-import { CurrentUserContext } from "../../context/CurrentUserContext";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import editButton from "../../assets/images/EditButton.png";
 import addButton from "../../assets/images/AddButton.png";
 
