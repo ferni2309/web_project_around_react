@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Card from "./components/Card/Card";
+import Card from "./components/Card/Card"; 
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import editButton from "../../assets/images/EditButton.png";
 import addButton from "../../assets/images/AddButton.png";
@@ -13,6 +13,7 @@ function Main({
   onCardDelete,
   cards,
 }) {
+  
   const currentUser = useContext(CurrentUserContext);
 
   return (
@@ -21,11 +22,12 @@ function Main({
         <div className="profile__avatar-container" onClick={onEditAvatarClick}>
           <img
             src={currentUser.avatar || "https://via.placeholder.com"}
-            alt="Avatar"
+            alt="Avatar del usuario"
             className="profile__avatar"
           />
           <div className="profile__avatar-overlay"></div>
         </div>
+        
         <div className="profile__info">
           <div className="profile__title-container">
             <h1 className="profile__name">
@@ -36,17 +38,18 @@ function Main({
               type="button"
               onClick={onEditProfileClick}
             >
-              <img src={editButton} alt="Botón editar perfil" />
+              <img src={editButton} alt="Editar perfil" />
             </button>
           </div>
-          <p className="profile__about">{currentUser.about || "Estudiante"}</p>
+          <p className="profile__about">{currentUser.about || "Cargando..."}</p>
         </div>
+
         <button
           className="profile__add-button"
           type="button"
           onClick={onAddPlaceClick}
         >
-          <img src={addButton} alt="Botón añadir tarjeta" />
+          <img src={addButton} alt="Añadir tarjeta" />
         </button>
       </section>
 
