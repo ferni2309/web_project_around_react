@@ -1,43 +1,62 @@
-import React, { useRef, useState, useEffect } from 'react';
-import PopupWithForm from '../PopupWithForm';
+import React, { useState, useEffect } from "react";
+import PopupWithForm from "../PopupWithForm";
 
-function EditAvatar({ isOpen, onClose, onUpdateAvatar }) {
-  const avatarRef = useRef();
-  const [error, setError] = useState('');
-  const [isValid, setIsValid] = useState(false);
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+  const [avatar, setAvatar] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (isOpen) {
-      if (avatarRef.current) avatarRef.current.value = '';
-      setError('');
-      setIsValid(false);
+    if (!isOpen) {
+      setAvatar("");
+      setError("");
     }
   }, [isOpen]);
 
-  const handleChange = (e) => {
+  function handleChange(e) {
+    setAvatar(e.target.value);
     setError(e.target.validationMessage);
-    setIsValid(e.target.form.checkValidity());
-  };
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar({ avatar: avatarRef.current.value });
+    if (isValid) {
+      onUpdateAvatar({ avatar });
+      setAvatar("");
+    }
   }
 
+  const isValid = avatar && !error;
+
   return (
-    <PopupWithForm 
-      name="edit-avatar" title="Actualizar foto de perfil" isOpen={isOpen} 
-      onClose={onClose} onSubmit={handleSubmit} buttonText="Guardar"
-      isButtonDisabled={!isValid}
+    <PopupWithForm
+      name="edit-avatar"
+      title="Actualizar avatar"
+      buttonText="Guardar"
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
     >
-      <input 
-        ref={avatarRef} type="url" name="avatar" placeholder="Enlace a la imagen" required 
-        className={`popup__input ${error ? 'popup__input_type_error' : ''}`}
+      <input
+        className="popup__input"
+        id="avatar-input"
+        type="url"
+        name="avatar"
+        placeholder="Enlace del avatar"
+        required
+        value={avatar}
         onChange={handleChange}
       />
-      <span className="popup__input-error">{error}</span>
+      <span className="popup__input-error avatar-input-error">{error}</span>
+
+      <button
+        className={`popup__button ${!isValid ? "popup__button_disabled" : ""}`}
+        type="submit"
+        disabled={!isValid}
+      >
+        Guardar
+      </button>
     </PopupWithForm>
   );
 }
 
-export default EditAvatar;
+export default EditAvatarPopup;

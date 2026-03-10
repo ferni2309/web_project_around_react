@@ -1,46 +1,41 @@
-import React, { useState, useEffect, useContext } from 'react';
-import PopupWithForm from '../PopupWithForm';
-import { CurrentUserContext } from '../../../../../contexts/CurrentUserContext';
+import React, { useState, useEffect, useContext } from "react";
+import PopupWithForm from "../PopupWithForm";
+import { CurrentUserContext } from "../../../../../contexts/CurrentUserContext";
 
-function EditProfile({ isOpen, onClose, onUpdateUser }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+  const currentUser = useContext(CurrentUserContext);
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState({ name: "", description: "" });
 
-  const [errors, setErrors] = useState({ name: '', about: '' });
-  const [isValid, setIsValid] = useState(false);
-
+  // ✅ Precargar datos del usuario cuando se abre el popup
   useEffect(() => {
-    if (currentUser && isOpen) {
-      setName(currentUser.name || '');
-      setDescription(currentUser.about || '');
-      setErrors({ name: '', about: '' });
-      setIsValid(true);
-    }
-  }, [currentUser, isOpen]);
+  if (isOpen && currentUser) {
+    setName(currentUser.name || "");
+    setDescription(currentUser.about || "");
+    setErrors({ name: "", description: "" }); // si usas validación
+  }
+}, [isOpen, currentUser]);
 
-  const handleChange = (e) => {
-    const { name: inputName, value, validationMessage, form } = e.target;
+  function handleNameChange(e) {
+    setName(e.target.value);
+    setErrors({ ...errors, name: e.target.validationMessage });
+  }
 
-    if (inputName === 'name') setName(value);
-    if (inputName === 'about') setDescription(value);
-
-    setErrors(prevErrors => ({
-      ...prevErrors,
-      [inputName]: validationMessage
-    }));
-
-    setIsValid(form.checkValidity());
-  };
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+    setErrors({ ...errors, description: e.target.validationMessage });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateUser({
-      name,
-      about: description,
-    });
+    if (isValid) {
+      onUpdateUser({ name, about: description });
+    }
   }
+
+  const isValid = name && description && !errors.name && !errors.description;
 
   return (
     <PopupWithForm
@@ -49,42 +44,44 @@ function EditProfile({ isOpen, onClose, onUpdateUser }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText="Guardar"
-      isButtonDisabled={!isValid}
     >
-      <div className="popup__field">
-        <input
-          className={`popup__input ${errors.name ? 'popup__input_type_error' : ''}`}
-          name="name"
-          placeholder="Nombre"
-          required
-          minLength="2"
-          maxLength="40"
-          value={name}
-          onChange={handleChange}
-        />
-        <span className={`popup__input-error ${errors.name ? 'popup__error_visible' : ''}`}>
-          {errors.name}
-        </span>
-      </div>
+      <input
+        className="popup__input"
+        id="name-input"
+        type="text"
+        name="name"
+        placeholder="Nombre"
+        required
+        minLength="2"
+        maxLength="40"
+        value={name}
+        onChange={handleNameChange}
+      />
+      <span className="popup__input-error name-input-error">{errors.name}</span>
 
-      <div className="popup__field">
-        <input
-          className={`popup__input ${errors.about ? 'popup__input_type_error' : ''}`}
-          name="about"
-          placeholder="Acerca de mí"
-          required
-          minLength="2"
-          maxLength="200"
-          value={description}
-          onChange={handleChange}
-        />
-        <span className={`popup__input-error ${errors.about ? 'popup__error_visible' : ''}`}>
-          {errors.about}
-        </span>
-      </div>
+      <input
+        className="popup__input"
+        id="about-input"
+        type="text"
+        name="about"
+        placeholder="Acerca de mí"
+        required
+        minLength="2"
+        maxLength="200"
+        value={description}
+        onChange={handleDescriptionChange}
+      />
+      <span className="popup__input-error about-input-error">{errors.description}</span>
+
+      <button
+        className={`popup__button ${!isValid ? "popup__button_disabled" : ""}`}
+        type="submit"
+        disabled={!isValid}
+      >
+        Guardar
+      </button>
     </PopupWithForm>
   );
 }
 
-export default EditProfile;
+export default EditProfilePopup;

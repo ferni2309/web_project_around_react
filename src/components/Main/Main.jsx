@@ -1,24 +1,26 @@
 import { useContext, useState } from "react";
 import Card from "./components/Card/Card";
-import PopupWithForm from "./components/popup/PopupWithForm";
+import Popup from "./components/popup/Popup";
 import EditProfile from "./components/popup/EditProfile/EditProfile";
 import EditAvatar from "./components/popup/EditAvatar/EditAvatar";
 import NewCard from "./components/popup/NewCard/NewCard";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function Main({ cards, onUpdateUser, onUpdateAvatar, onAddPlaceSubmit, onCardLike, onCardDelete }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function Main({
+  cards,
+  onUpdateUser,
+  onUpdateAvatar,
+  onAddPlaceSubmit,
+  onCardLike,
+  onCardDelete,
+}) {
+  const currentUser = useContext(CurrentUserContext);
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isNewCardPopupOpen, setIsNewCardPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
-  const handleEditProfileClick = () => setIsEditProfilePopupOpen(true);
-  const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
-  const handleNewCardClick = () => setIsNewCardPopupOpen(true);
-  const handleCardClick = (card) => setSelectedCard(card);
 
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
@@ -30,39 +32,81 @@ function Main({ cards, onUpdateUser, onUpdateAvatar, onAddPlaceSubmit, onCardLik
   return (
     <main className="content">
       <section className="profile">
-        <div className="profile_avatar-container" onClick={handleEditAvatarClick}>
-          <img src={currentUser.avatar || "/images/default-avatar.png"} alt="Avatar" className="profile_avatar" />
-          <div className="profile_avatar-overlay"></div>
+        <div
+          className="profile__avatar-container"
+          onClick={() => setIsEditAvatarPopupOpen(true)}
+        >
+          <img
+            src={currentUser?.avatar}
+            alt="Avatar"
+            className="profile__avatar"
+          />
+          <div className="profile__avatar-overlay"></div>
         </div>
-
-        <div className="profile_info">
-          <div className="profile_title-container">
-            <h1 className="profile_name">{currentUser.name}</h1>
-            <button className="profile_edit-button" type="button" onClick={handleEditProfileClick}></button>
+        <div className="profile__info">
+          <div className="profile__title-container">
+            <h1 className="profile__name">{currentUser?.name}</h1>
+            <button
+              className="profile__edit-button"
+              type="button"
+              onClick={() => setIsEditProfilePopupOpen(true)}
+            ></button>
           </div>
-          <p className="profile_about">{currentUser.about}</p>
+          <p className="profile__about">{currentUser?.about}</p>
         </div>
-        <button className="profile_add-button" type="button" onClick={handleNewCardClick}></button>
+        <button
+          className="profile__add-button"
+          type="button"
+          onClick={() => setIsNewCardPopupOpen(true)}
+        ></button>
       </section>
 
       <section className="cards">
-        <ul className="cards_list">
-          {cards.map((card) => (
-            <Card
-              key={card._id}
-              card={card}
-              onCardClick={handleCardClick}
-              onCardLike={onCardLike}
-              onCardDelete={onCardDelete}
-            />
-          ))}
+        <ul className="cards__list">
+          {cards &&
+            cards.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                onCardClick={(card) => setSelectedCard(card)}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+              />
+            ))}
         </ul>
       </section>
 
-      <EditProfile isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={onUpdateUser} />
-      <EditAvatar isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={onUpdateAvatar} />
-      <NewCard isOpen={isNewCardPopupOpen} onClose={closeAllPopups} onAddPlaceSubmit={onAddPlaceSubmit} />
-      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      <Popup
+        isOpen={isEditProfilePopupOpen}
+        name="edit-profile"
+        onClose={closeAllPopups}
+      >
+        <EditProfile
+          isOpen={isEditProfilePopupOpen}
+          onUpdateUser={onUpdateUser}
+          onClose={closeAllPopups}
+        />
+      </Popup>
+
+      <Popup
+        isOpen={isEditAvatarPopupOpen}
+        name="edit-avatar"
+        onClose={closeAllPopups}
+      >
+        <EditAvatar isOpen={isEditAvatarPopupOpen} onUpdateAvatar={onUpdateAvatar} onClose={closeAllPopups} />
+      </Popup>
+
+      <Popup
+        isOpen={isNewCardPopupOpen}
+        name="new-card"
+        onClose={closeAllPopups}
+      >
+        <NewCard isOpen={isNewCardPopupOpen} onAddPlaceSubmit={onAddPlaceSubmit} onClose={closeAllPopups} />
+      </Popup>
+
+      <Popup isOpen={!!selectedCard} name="image" onClose={closeAllPopups}>
+        <ImagePopup card={selectedCard} />
+      </Popup>
     </main>
   );
 }

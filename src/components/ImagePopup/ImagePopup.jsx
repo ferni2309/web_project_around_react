@@ -1,12 +1,20 @@
-function ImagePopup({ card, onClose }) {
+import React from "react";
+
+function ImagePopup({ card }) {
+  // Si no hay tarjeta seleccionada, no renderizamos nada
+  if (!card) return null;
+
   return (
-    <div className={`image-popup ${card ? 'popup_opened' : ''}`}>
-      <div className="image-popup__content">
-        <button className="image-popup__close" onClick={onClose} type="button" />
-        <img src={card?.link} alt={card?.name} className="image-popup__img" />
-        <p className="image-popup__caption">{card?.name}</p>
-      </div>
+    <div className="popup__container-image">
+      {/* Ya no hay botón cerrar aquí, lo pone el componente Popup */}
+      <img 
+        className="popup__image" 
+        src={card.link} 
+        alt={card.name} 
+      />
+      <p className="popup__caption">{card.name}</p>
     </div>
   );
 }
+
 export default ImagePopup;

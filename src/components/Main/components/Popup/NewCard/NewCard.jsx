@@ -1,54 +1,82 @@
-import { useState, useEffect } from 'react';
-import PopupWithForm from '../PopupWithForm';
+import React, { useState, useEffect } from "react";
+import PopupWithForm from "../PopupWithForm";
 
 function NewCard({ isOpen, onClose, onAddPlaceSubmit }) {
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
-  const [errors, setErrors] = useState({ title: '', link: '' });
-  const [isValid, setIsValid] = useState(false);
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
+  const [errors, setErrors] = useState({ name: "", link: "" });
 
   useEffect(() => {
-    if (isOpen) {
-      setName('');
-      setLink('');
-      setErrors({ title: '', link: '' });
-      setIsValid(false);
+    if (!isOpen) {
+      setName("");
+      setLink("");
+      setErrors({ name: "", link: "" });
     }
   }, [isOpen]);
 
-  const handleChange = (e) => {
-    const { name: inputName, value, validationMessage, form } = e.target;
-    if (inputName === 'title') setName(value);
-    if (inputName === 'link') setLink(value);
+  function handleNameChange(e) {
+    setName(e.target.value);
+    setErrors({ ...errors, name: e.target.validationMessage });
+  }
 
-    setErrors(prev => ({ ...prev, [inputName]: validationMessage }));
-    setIsValid(form.checkValidity());
-  };
+  function handleLinkChange(e) {
+    setLink(e.target.value);
+    setErrors({ ...errors, link: e.target.validationMessage });
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAddPlaceSubmit({ name, link });
+    if (isValid) {
+      onAddPlaceSubmit({ name, link });
+      setName("");
+      setLink("");
+    }
   }
 
-  return (
-    <PopupWithForm 
-      name="add-card" title="Nuevo lugar" isOpen={isOpen} 
-      onClose={onClose} onSubmit={handleSubmit} buttonText="Crear"
-      isButtonDisabled={!isValid}
-    >
-      <input 
-        className={`popup__input ${errors.title ? 'popup__input_type_error' : ''}`}
-        value={name} onChange={handleChange} name="title" placeholder="Título" 
-        required minLength="2" maxLength="30"
-      />
-      <span className="popup__input-error">{errors.title}</span>
+  const isValid = name && link && !errors.name && !errors.link;
 
-      <input 
-        className={`popup__input ${errors.link ? 'popup__input_type_error' : ''}`}
-        type="url" value={link} onChange={handleChange} name="link" placeholder="Enlace a la imagen" 
-        required 
+  return (
+    <PopupWithForm
+      name="add-place"
+      title="Nuevo lugar"
+      buttonText="Crear"
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    >
+      <input
+        className="popup__input"
+        id="place-input"
+        type="text"
+        name="name"
+        placeholder="Título"
+        required
+        minLength="2"
+        maxLength="30"
+        value={name}
+        onChange={handleNameChange}
       />
-      <span className="popup__input-error">{errors.link}</span>
+      <span className="popup__input-error place-input-error">{errors.name}</span>
+
+      <input
+        className="popup__input"
+        id="link-input"
+        type="url"
+        name="link"
+        placeholder="Enlace de la imagen"
+        required
+        value={link}
+        onChange={handleLinkChange}
+      />
+      <span className="popup__input-error link-input-error">{errors.link}</span>
+
+      <button
+        className={`popup__button ${!isValid ? "popup__button_disabled" : ""}`}
+        type="submit"
+        disabled={!isValid}
+      >
+        Crear
+      </button>
     </PopupWithForm>
   );
 }

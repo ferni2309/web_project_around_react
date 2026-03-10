@@ -1,13 +1,37 @@
-import closeIcon from '../../../../assets/images/Close-Icon.png';
+import React, { useEffect } from "react";
 
-function Popup({ title, name, isOpen, onClose, children }) {
+function Popup({ isOpen, name, onClose, children }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscape = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen, onClose]);
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
   return (
-    <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-      <div className="popup__content">
-        <button className="popup__close" type="button" onClick={onClose}>
-          <img src={closeIcon} alt="Cerrar" />
-        </button>
-        <h2 className="popup__header">{title}</h2>
+    <div
+      className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
+      onClick={handleOverlayClick}
+    >
+      {/* 
+         Si name es "image", usamos un wrapper transparente.
+         Si no, usamos el cuadro blanco estándar (popup__content).
+      */}
+      <div className={name === "image" ? "popup__image-wrapper" : "popup__content"}>
+        {isOpen && (
+  <button
+    className="popup__close"
+    type="button"
+    onClick={onClose}
+    aria-label="Cerrar"
+  />
+)}
         {children}
       </div>
     </div>
