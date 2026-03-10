@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PopupWithForm from "../PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatar({ isOpen, onClose, onUpdateAvatar }) {
   const [avatar, setAvatar] = useState("");
   const [error, setError] = useState("");
 
@@ -59,4 +59,4 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   );
 }
 
-export default EditAvatarPopup;
+export default EditAvatar;
